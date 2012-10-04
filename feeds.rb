@@ -23,7 +23,7 @@ get '/latest/:name' do
       content_type 'text/html'
       return "<h1>Feed Not Supported</h1>"
   end
-  content_type :json
+  content_type 'application/json;charset=utf-8'
   jsonify feeds[params[:name]]
 end
 
