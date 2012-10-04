@@ -4,6 +4,10 @@ require 'json'
 require 'net/http'
 require 'active_support/core_ext'
 
+configure do
+  set :protection, :except => :json_csrf
+end
+
 feeds = { "twblogs" => 'http://www.thoughtworks.com/blogs/rss/current',
   "ilm" => 'http://feeds.feedburner.com/ILoveMadras?format=xml',
   "ycombinator" => "http://news.ycombinator.com/rss",
@@ -24,13 +28,11 @@ get '/latest/:name' do
       return "<h1>Feed Not Supported</h1>"
   end
   content_type 'application/json;charset=utf-8'
-  set :protection, :except => :json_csrf
   jsonify feeds[params[:name]]
 end
 
 get '/source' do
   content_type 'application/json;charset=utf-8'
-  set :protection, :except => :json_csrf
   jsonify params[:feed]
 end
 
