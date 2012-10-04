@@ -29,7 +29,8 @@ get '/latest/:name' do
 end
 
 get '/source' do
-  content_type :json
+  content_type 'application/json;charset=utf-8'
+  set :protection, :except => :json_csrf
   jsonify params[:feed]
 end
 
