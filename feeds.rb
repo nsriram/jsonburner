@@ -4,15 +4,16 @@ require 'json'
 require 'net/http'
 require 'active_support/core_ext'
 
-feeds = {"twblogs" => 'http://www.thoughtworks.com/blogs/rss/current',
+feeds = { "twblogs" => 'http://www.thoughtworks.com/blogs/rss/current',
   "ilm" => 'http://feeds.feedburner.com/ILoveMadras?format=xml',
   "ycombinator" => "http://news.ycombinator.com/rss",
   "google" => "http://feeds.feedburner.com/blogspot/MKuf",
   "cricinfo" => "http://www.espncricinfo.com/rss/content/story/feeds/0.xml",
   "nytimes" => "http://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml",
-  "amazon-blu-ray" => "http://www.amazon.com/rss/tag/blu-ray/new/ref=tag_rsh_hl_ersn"}
+  "amazon-blu-ray" => "http://www.amazon.com/rss/tag/blu-ray/new/ref=tag_rsh_hl_ersn"
+}
 
-def thoughtblogs_rss(feed_url)
+def jsonify(feed_url)
   s = Net::HTTP.get_response(URI.parse(feed_url)).body
   Hash.from_xml(s).to_json
 end
@@ -23,8 +24,12 @@ get '/latest/:name' do
       return "<h1>Feed Not Supported</h1>"
   end
   content_type :json
-  puts feeds[params[:name]]
-  thoughtblogs_rss feeds[params[:name]]
+  jsonify feeds[params[:name]]
+end
+
+get '/source' do
+  content_type :json
+  jsonify params[:feed]
 end
 
 get '/supported' do
