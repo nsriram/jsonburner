@@ -24,6 +24,7 @@ get '/latest/:name' do
       return "<h1>Feed Not Supported</h1>"
   end
   content_type 'application/json;charset=utf-8'
+  set :protection, :except => :json_csrf
   jsonify feeds[params[:name]]
 end
 
