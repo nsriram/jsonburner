@@ -15,7 +15,11 @@ def thoughtblogs_rss(feed_url)
 end
 
 
-get '/latest.json/:name' do
+get '/latest/:name' do
+  if !feeds[params[:name]]
+      content_type 'text/html'
+      return "<h1>Feed Not Supported</h1>"
+  end
   content_type :json
   puts feeds[params[:name]]
   thoughtblogs_rss feeds[params[:name]]
